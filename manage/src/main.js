@@ -7,14 +7,26 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import login from './components/login'
+import store from './vuex'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI);
+Vue.prototype.$ajax = axios;
+
+axios.interceptors.request.use((config) => {
+    config.url = 'http://127.0.0.1' + config.url;
+    return config;
+})
+axios.interceptors.response.use(({ data }) => {
+    return data;
+})
+
 
 /* eslint-disable no-new */
 new Vue({
     el: '#app',
     router,
+    store,
     components: { ele, login },
-    template: '<login/>'
+    template: `<components :is="$store.state.admin.adminId?'ele':'login'"/>`
 })
