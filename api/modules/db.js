@@ -67,4 +67,30 @@ module.exports.updateOneById = function(coll, id, upObj, cb) {
             _id: mongodb.ObjectId(id)
         }, upObj, cb)
     })
+};
+//多表联查
+//获得管理员日志信息
+module.exports.getAdminLogList = function(limit, skip, cb) {
+    _connect(function(db) {
+        db.collection('adminLog').aggregate([
+            { $sort: { addTime: -1 } },
+            { $skip: skip },
+            { $limit: limit },
+            {
+                $lookup: {
+                    from: 'adminList',
+                    localField: 'adminId',
+                    foreignField: '_id',
+                    as: 'adminInfo'
+                }
+            }, {
+                $lookup: {
+                    from: 'logType',
+                    localField: 'logType',
+                    foreignField: 'typeId',
+                    as: 'typeInfo'
+                }
+            }
+        ]).toArray(cb)
+    })
 }

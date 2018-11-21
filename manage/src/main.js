@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import login from './components/login'
 import store from './vuex'
+import filters from '@/filters'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI);
@@ -21,6 +22,9 @@ axios.interceptors.response.use(({ data }) => {
     return data;
 })
 
+for (var key in filters) {
+    Vue.filter(key, filters[key])
+}
 
 /* eslint-disable no-new */
 new Vue({
