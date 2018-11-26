@@ -5,6 +5,7 @@ api/node_modules/
 manage/npm-debug.log*
 manage/yarn-debug.log*
 manage/yarn-error.log*
+api/upload
 
 # Editor directories and files
 .idea
