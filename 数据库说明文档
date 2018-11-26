@@ -17,7 +17,6 @@
     _id
     shopTypeName:类别名称
     shopTypePic:图片
-    orderNum:排序 数字越大越靠前
     createTime:添加时间
     upTime:最后一次的更新时间
 4.shopList(店铺列表)

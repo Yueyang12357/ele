@@ -12,12 +12,12 @@ module.exports.upPic = function(req, picName, cb) {
     form.uploadDir = "./upload";
     form.keepExtensions = true;
     form.parse(req, function(err, params, file) {
-        if (err)
+        if (err) {
             cb({
                 ok: 2,
                 msg: "网络连接错误"
             })
-        else {
+        } else {
             var picInfo = file[picName];
             if (picInfo) {
                 // 上传了图片

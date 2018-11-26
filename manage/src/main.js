@@ -14,6 +14,13 @@ Vue.config.productionTip = false
 Vue.use(ElementUI);
 Vue.prototype.$ajax = axios;
 
+router.beforeEach((to,from,next)=>{
+    if(!localStorage.adminId || !localStorage.adminName){
+        store.commit("OUT_LOGIN");
+    }
+    next();
+})
+
 axios.interceptors.request.use((config) => {
     config.url = 'http://127.0.0.1' + config.url;
     return config;
