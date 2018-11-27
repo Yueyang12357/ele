@@ -37,7 +37,7 @@
                 <template slot-scope="scope">
                     <el-button-group>
                         <el-button size="mini" type="primary" icon="el-icon-edit"  @click="shopUpdate(scope.row._id)" round></el-button>
-                        <el-button size="mini" type="success" icon="el-icon-circle-plus" @click="addgoods(scope.row._id)" title="添加商品"></el-button>
+                        <el-button size="mini" type="success" icon="el-icon-circle-plus" @click="addGoodsType(scope.row._id)" title="添加商品类别"></el-button>
                         <el-button size="mini" type="danger" icon="el-icon-delete" @click="delShop(scope.row._id)" round></el-button>
                     </el-button-group>
                 </template>                
@@ -46,13 +46,13 @@
         <el-pagination background layout="prev, pager, next" :page-count='pageSum' :current-page.sync='pageIndex' @current-change='getShopList'>            
         </el-pagination>
         <shopDialog v-if="shopVisible" :shopVisible.sync="shopVisible" :getShopList.sync="getShopList" :shopId="shopId"></shopDialog>
-        <goodsTypeDialog v-if="goodsVisible" :goodsVisible.sync="goodsVisible" :shopId="shopId"></goodsTypeDialog>
+        <goodsTypeDialog v-if="goodsTypeVisible" :goodsTypeVisible.sync="goodsTypeVisible" :id="shopId"></goodsTypeDialog>
     </div>
 </template>
 
 <script>
 import shopDialog from '@/components/shop/shopDialog';
-import goodsTypeDialog from '@/components/goods/goodsDialog';
+import goodsTypeDialog from '@/components/goods/goodsTypeDialog';
 
 export default {
     name:'shop-manage',
@@ -64,7 +64,7 @@ export default {
             shopId:'',
             keyword:'',
             shopVisible:false,
-            goodsVisible:false
+            goodsTypeVisible:false
         }
     },
     components:{
@@ -80,15 +80,16 @@ export default {
         getShopList(pageIndex){
             this.$ajax.get('/getShopList',{
                 params:{
-                    keyword:this.keyword
+                    keyword:this.keyword,
+                    pageIndex:this.pageIndex
                 }
             }).then(data=>{
                 this.shopList = data.shopList
                 this.pageSum = data.pageSum
             })
         },
-        addgoods(id){
-            this.goodsDialog=true;
+        addGoodsType(id){
+            this.goodsTypeVisible=true;
             this.shopId=id
         },
         delShop(id){

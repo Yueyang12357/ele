@@ -43,13 +43,17 @@
                         </el-menu-item>
                         <el-menu-item index="4">
                             <i class="el-icon-menu"></i>
-                            <span slot="title" @click="$router.push('/goodsTypeMange')">商品类别管理</span>
+                            <span slot="title" @click="$router.push('/goodsTypeManage')">商品类别管理</span>
                         </el-menu-item>
                         <el-menu-item index="5">
                             <i class="el-icon-menu"></i>
-                            <span slot="title" @click="$router.push('/goodsMange')">商品管理</span>
+                            <span slot="title" @click="$router.push('/goodsManage')">商品管理</span>
                         </el-menu-item>
                         <el-menu-item index="6">
+                            <i class="el-icon-menu"></i>
+                            <span slot="title" @click="$router.push('/advManage')">广告管理</span>
+                        </el-menu-item>
+                        <el-menu-item index="7">
                             <i class="el-icon-menu"></i>
                             <span slot="title" @click="$router.push('/userManage')">用户管理</span>
                         </el-menu-item>

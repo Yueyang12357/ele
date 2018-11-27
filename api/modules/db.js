@@ -94,3 +94,46 @@ module.exports.getAdminLogList = function(limit, skip, cb) {
         ]).toArray(cb)
     })
 }
+//获得商品类别信息
+module.exports.goodsTypeInfo = function(obj, cb) {
+    _connect(function(db) {
+        db.collection('goodsTypeList').aggregate([
+            { $sort: { createTime: -1 } },
+            { $skip: obj.skipNum },
+            { $limit: obj.limitNum },
+            {
+                $lookup: {
+                    from: 'shopList',
+                    localField: 'shopId',
+                    foreignField: '_id',
+                    as: 'shopInfo'
+                }
+            }
+        ]).toArray(cb)
+    })
+}
+//获得商品信息
+module.exports.goodsInfo = function(obj, cb) {
+    _connect(function(db) {
+        db.collection('goodsList').aggregate([
+            { $sort: { createTime: -1 } },
+            { $skip: obj.skipNum },
+            { $limit: obj.limitNum },
+            {
+                $lookup: {
+                    from: 'goodsTypeList',
+                    localField: 'goodsTypeId',
+                    foreignField: '_id',
+                    as: 'goodsTypeInfo'
+                }
+            },{
+                $lookup: {
+                    from: 'shopList',
+                    localField: 'shopId',
+                    foreignField: '_id',
+                    as: 'shopInfo'
+                }
+            }
+        ]).toArray(cb)
+    })
+}

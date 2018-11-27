@@ -255,6 +255,190 @@ app.delete('/delShop', function(req, res) {
         })
     })
 })
+app.get('/getShop',function(req,res){
+    db.find('shopList', {
+        sortObj: {
+            createTime: -1
+        }
+    }, function(err, shopList) {
+        res.json({
+            ok: 1,
+            shopList
+        })
+    })
+})
+app.post('/addGoodsType',function(req,res){
+    db.insertOne('goodsTypeList', {
+        goodsTypeName: req.body.goodsTypeName,
+        shopId:mongodb.ObjectId(req.body.shopId),
+        createTime: Date.now(),
+        upTime: Date.now(),
+    }, function(err, results) {
+        res.json({
+            ok: 1,
+            msg: '添加成功'
+        })
+    })
+})
+app.get('/getGoodsTypeList',function(req,res){
+    var pageIndex = req.query.pageIndex;
+    var keyword = req.query.keyword;
+    var i = {};
+    if (keyword) {
+        i.goodsTypeName = { $regex: keyword }
+    }
+    var pageSum = 1;
+    var pageNum = 5;
+    db.count('goodsTypeList', i, function(count) {
+        pageSum = Math.ceil(count / pageNum);
+        if (pageSum < 1) {
+            pageSum = 1
+        };
+        if (pageIndex > pageSum) {
+            pageIndex = pageSum
+        }
+        db.goodsTypeInfo({
+            skipNum: (pageIndex - 1) * pageNum,
+            limitNum: pageNum
+        }, function(err, goodsTypeList) {
+            res.json({
+                ok: 1,
+                goodsTypeList,
+                pageSum: pageSum
+            })
+        })
+    })
+})
+app.get('/getGoodsType',function(req,res){
+    var shopId = mongodb.ObjectId(req.query.shopId);
+    db.find('goodsTypeList', {
+        whereObj:{
+            shopId:shopId
+        },
+        sortObj: {
+            createTime: -1
+        }
+    }, function(err, goodsTypeList) {
+        res.json({
+            ok: 1,
+            goodsTypeList
+        })
+    })
+})
+app.post('/addGoods',function(req,res){
+    upPic.upPic(req, 'goodsPic', function(obj) {
+        if (obj.ok == 1) {
+            db.insertOne('goodsList', {
+                goodsName: obj.params.goodsName,
+                shopId: mongodb.ObjectId(obj.params.shopId),
+                goodsTypeId: mongodb.ObjectId(obj.params.goodsTypeId),
+                goodsPic: obj.newPicName,
+                isHot:obj.params.isHot,
+                goodsNum:obj.params.goodsNum,
+                createTime: Date.now(),
+                upTime: Date.now(),
+            }, function(err, results) {
+                res.json({
+                    ok: 1,
+                    msg: '添加商品成功'
+                })
+            })
+        } else {
+            res.json({
+                ok: 2,
+                msg: 'obj.msg'
+            })
+        }
+    })
+})
+app.get('/getGoodsList',function(req,res){
+    var pageIndex = req.query.pageIndex;
+    var keyword = req.query.keyword;
+    var i = {};
+    if (keyword) {
+        i.goodsName = { $regex: keyword }
+    }
+    var pageSum = 1;
+    var pageNum = 5;
+    db.count('goodsList', i, function(count) {
+        pageSum = Math.ceil(count / pageNum);
+        if (pageSum < 1) {
+            pageSum = 1
+        };
+        if (pageIndex > pageSum) {
+            pageIndex = pageSum
+        }
+        db.goodsInfo({
+            skipNum: (pageIndex - 1) * pageNum,
+            limitNum: pageNum
+        }, function(err, goodsList) {
+            res.json({
+                ok: 1,
+                goodsList,
+                pageSum: pageSum
+            })
+        })
+    })
+})
+app.post('/addAdv',function(req,res){
+    upPic.upPic(req, 'advPic', function(obj) {
+        if (obj.ok == 1) {
+            db.insertOne('advList', {
+                advName: obj.params.advName,
+                advTypeId:obj.params.advTypeId,
+                advAddress: obj.params.advAddress,
+                orderNum:obj.params.orderNum,
+                advPic: obj.newPicName,
+                advStartTime:obj.params.advStartTime,
+                advOverTime:obj.params.advOverTime,
+                createTime: Date.now(),
+                upTime: Date.now(),
+            }, function(err, results) {
+                res.json({
+                    ok: 1,
+                    msg: '添加商品成功'
+                })
+            })
+        } else {
+            res.json({
+                ok: 2,
+                msg: '添加失败'
+            })
+        }
+    })
+})
+app.get('/getAdvList',function(req,res){
+    var pageIndex = req.query.pageIndex;
+    var keyword = req.query.keyword;
+    var i = {};
+    if (keyword) {
+        i.advName = { $regex: keyword }
+    }
+    var pageSum = 1;
+    var pageNum = 5;
+    db.count('advList', i, function(count) {
+        pageSum = Math.ceil(count / pageNum);
+        if (pageSum < 1) {
+            pageSum = 1
+        };
+        if (pageIndex > pageSum) {
+            pageIndex = pageSum
+        }
+        db.find('advList',{
+            sortObj:{
+                createTime:-1
+            },
+            skipNum: (pageIndex - 1) * pageNum,
+            limitNum: pageNum
+        }, function(err, advList) {
+            res.json({
+                ok: 1,
+                advList,
+                pageSum: pageSum
+            })
+        })
+    })
+})
 app.post('/login', function(req, res) {
     db.findOne('adminList', {
         adminName: req.body.adminName,
