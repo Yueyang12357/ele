@@ -1,11 +1,16 @@
 manage/.DS_Store
 manage/node_modules/
-api/node_modules/
-/dist/
 manage/npm-debug.log*
 manage/yarn-debug.log*
 manage/yarn-error.log*
+site/.DS_Store
+site/node_modules/
+site/npm-debug.log*
+site/yarn-debug.log*
+site/yarn-error.log*
 api/upload
+api/node_modules/
+/dist/
 
 # Editor directories and files
 .idea

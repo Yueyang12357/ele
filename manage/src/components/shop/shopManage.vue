@@ -75,7 +75,6 @@ export default {
         shopUpdate(id){
             this.shopVisible=true;
             this.shopId=id
-            console.log(this.shopId)
         },
         getShopList(pageIndex){
             this.$ajax.get('/getShopList',{

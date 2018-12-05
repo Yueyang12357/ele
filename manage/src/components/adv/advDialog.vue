@@ -14,7 +14,9 @@
                 </el-form-item>
                 <el-form-item label="广告类别" label-width="120px">
                     <el-select placeholder="请选择" v-model="advTypeId">
-                        <el-option v-for="item in advList" :label="item.advTypeId" :value="item._id" :key="item._id"></el-option>
+                        <el-option value="1" label="banner">banner</el-option>
+                        <el-option value="2" label="activityAdv">activityAdv</el-option>
+                        <el-option value="3" label="other">other</el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="活动时间" label-width="120px">
@@ -51,7 +53,7 @@ export default {
             advList:[],
             pageIndex:1,
             pageSum:1,
-            advTypeId:'1',
+            advTypeId:[1,2,3,4],
             date1:'',
             date2:''
         }        

@@ -40,13 +40,7 @@ module.exports.findOneById = function(coll, id, cb) {
         }, cb)
     })
 };
-//查找一条信息
-module.exports.findOne = function(coll, whereObj, cb) {
-        _connect(function(db) {
-            db.collection(coll).findOne(whereObj, cb)
-        })
-    }
-    /*根据条件计算文档的数量*/
+/*根据条件计算文档的数量*/
 module.exports.count = function(coll, whereObj, cb) {
     _connect(function(db) {
         db.collection(coll).countDocuments(whereObj).then(cb)
@@ -66,6 +60,11 @@ module.exports.updateOneById = function(coll, id, upObj, cb) {
         db.collection(coll).updateOne({
             _id: mongodb.ObjectId(id)
         }, upObj, cb)
+    })
+};
+module.exports.updateOne = function(coll,obj,upObj,cb){
+    _connect(function(db){
+        db.collection(coll).updateOne(obj,upObj,cb)
     })
 };
 //多表联查
@@ -132,6 +131,22 @@ module.exports.goodsInfo = function(obj, cb) {
                     localField: 'shopId',
                     foreignField: '_id',
                     as: 'shopInfo'
+                }
+            }
+        ]).toArray(cb)
+    })
+};
+//获得购物车信息
+module.exports.getCarInfo = function(obj,cb){
+    _connect(function(db){
+        db.collection('carList').aggregate([
+            {$match:obj},
+            {
+                $lookup:{
+                    from:'goodsList',
+                    localField:'goodsId',
+                    foreignField:'_id',
+                    as:'goodsName'
                 }
             }
         ]).toArray(cb)

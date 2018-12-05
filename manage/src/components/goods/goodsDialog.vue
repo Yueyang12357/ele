@@ -5,6 +5,9 @@
                 <el-form-item label="商品名称" label-width="120px">
                     <el-input ref="goodsName" autocomplete="off" placeholder="请输入商品名称"></el-input>
                 </el-form-item>
+                <el-form-item label="商品价格" label-width="120px">
+                    <el-input ref="price" autocomplete="off" placeholder="请输入商品价格"></el-input>
+                </el-form-item>
                 <el-form-item label="店铺名称" label-width="120px">
                     <el-select placeholder="请选择" v-model="shopId" @change="getGoodsTypeList">
                         <el-option v-for="item in shopList" :label="item.shopName" :value="item._id" :key="item._id"></el-option>
@@ -62,6 +65,7 @@ export default {
         addGoods(){
             var formData = new FormData();
             formData.set('goodsName',this.$refs.goodsName.currentValue);
+            formData.set('price',this.$refs.price.currentValue);
             formData.set('shopId',this.shopId);
             formData.set('goodsTypeId',this.goodsTypeId);
             formData.set('isHot',this.isHot);

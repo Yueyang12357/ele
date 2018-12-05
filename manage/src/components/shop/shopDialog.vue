@@ -32,7 +32,8 @@ export default {
     data(){
         return {
            shopTypeList:[],
-           shopTypeId:''
+           shopTypeId:'',
+           id:''
         }
     },
     methods:{
@@ -47,8 +48,8 @@ export default {
             formData.set('shopName',this.$refs.shopName.currentValue);
             formData.set('shopTypeId',this.shopTypeId);
             formData.set('shopPic',document.querySelector('.el-upload__input').files[0]);
-            if(this.shopId.length>0){
-                formData.set('shopId',this.shopId)
+            if(this.id.length>0){                
+                formData.set('shopId',this.id)
                 this.$ajax.put('/updateShop',formData)
                     .then(data=>{
                     if(data.ok===1){
@@ -79,6 +80,9 @@ export default {
         this.getShopType();
         if(this.typeId){
             this.shopTypeId=this.typeId
+        }
+        if(this.shopId){
+            this.id=this.shopId
         }
     }
 }
